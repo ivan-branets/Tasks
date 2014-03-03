@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Extensions
 {
@@ -52,6 +53,18 @@ namespace Extensions
             }
 
             return collection;
-        } 
+        }
+
+        public static IList<int> GenerateRandomList(this IList<int> collection, int lenght, int maxValue)
+        {
+            var rand = new Random();
+
+            for (var i = 0; i < lenght; i++)
+            {
+                collection.Add(rand.Next(maxValue));
+            }
+
+            return collection;
+        }
     }
 }
