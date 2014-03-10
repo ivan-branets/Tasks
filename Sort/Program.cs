@@ -16,6 +16,7 @@ namespace Sort
             new List<int>(list).SelectionSort().Log();
             new List<int>(list).InsertionSort().Log();
             new List<int>(list).MergeSort().Log();
+            new List<int>(list).QuickSort().Log();
 
             Console.ReadKey();
         }
@@ -89,6 +90,50 @@ namespace Sort
                 else if (j > end) list[k] = _mergeSortArray[i++];
                 else list[k] = _mergeSortArray[i] < _mergeSortArray[j] ? _mergeSortArray[i++] : _mergeSortArray[j++];
             }
+        }
+
+        public static IList<int> QuickSort(this IList<int> list)
+        {
+            return QuickSort(list, 0, list.Count - 1);
+        }
+
+        public static IList<int> QuickSort(IList<int> list, int start, int end)
+        {
+            if (end <= start) return list;
+
+            var j = QuickSortPartition(list, start, end);
+
+            QuickSort(list, start, j - 1);
+            QuickSort(list, j + 1, end);
+
+            return list;
+        }
+
+        private static int QuickSortPartition(IList<int> list, int start, int end)
+        {
+            var i = start;
+            var j = end + 1;
+
+            while (true)
+            {
+                while (list[++i] < list[start])
+                {
+                    if (i == end) break;
+                }
+
+                while (list[--j] > list[start])
+                {
+                    if (j == start) break;
+                }
+
+                if (i >= j) break;
+
+                list.Switch(i, j);                
+            }
+
+            list.Switch(start, j);
+
+            return j;
         }
     }
 }
