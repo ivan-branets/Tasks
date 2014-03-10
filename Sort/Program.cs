@@ -15,6 +15,7 @@ namespace Sort
 
             new List<int>(list).SelectionSort().Log();
             new List<int>(list).InsertionSort().Log();
+            new List<int>(list).MergeSort().Log();
 
             Console.ReadKey();
         }
@@ -53,6 +54,41 @@ namespace Sort
             }
 
             return list;
+        }
+
+        public static IList<int> MergeSort(this IList<int> list)
+        {
+            _mergeSortArray = new int[list.Count];
+            MergeSort(list, 0, list.Count - 1);
+
+            return list;
+        }
+
+        private static void MergeSort(IList<int> list, int start, int end)
+        {
+            if (start == end) return;
+
+            var middle = start + (end - start) / 2;
+
+            MergeSort(list, start, middle);
+            MergeSort(list, middle + 1, end);
+            Merge(list, start, middle, end);
+        }
+
+        private static int[] _mergeSortArray;
+        private static void Merge(IList<int> list, int start, int middle, int end)
+        {
+            list.CopyTo(_mergeSortArray, 0);
+
+            var i = start;
+            var j = middle + 1;
+
+            for (var k = start; k <= end; k++)
+            {
+                if (i > middle) list[k] = _mergeSortArray[j++];
+                else if (j > end) list[k] = _mergeSortArray[i++];
+                else list[k] = _mergeSortArray[i] < _mergeSortArray[j] ? _mergeSortArray[i++] : _mergeSortArray[j++];
+            }
         }
     }
 }
